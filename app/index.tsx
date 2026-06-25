@@ -3,7 +3,8 @@ import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 
 import { GithubUser } from '@/src/types/github';
 import { getGithubUser } from '@/src/api/github';
-import { styles } from '@/src/api/styles/home.styles';
+import { styles } from '@/src/styles/home.styles';
+import UserCard from '@/src/components/UserCard';
 
 export default function HomeScreen() {
   const [username, setUsername] = useState('');
@@ -12,9 +13,10 @@ export default function HomeScreen() {
   const searchUser = async () => {
     try {
       const data = await getGithubUser(username);
-
+      setUsername('');
       setUser(data);
     } catch (error) {
+      setUser(null);
       console.error(error);
       alert('유저를 찾을 수 없습니다.');
     }
@@ -30,14 +32,7 @@ export default function HomeScreen() {
         <Text>검색</Text>
       </Pressable>
 
-      {user && (
-        <View style={styles.result}>
-          <Text>{user.name}</Text>
-          <Text>@{user.login}</Text>
-          <Text>Followers: {user.followers}</Text>
-          <Text>Repos: {user.public_repos}</Text>
-        </View>
-      )}
+      {user && <UserCard user={user} />}
     </View>
   );
 }
