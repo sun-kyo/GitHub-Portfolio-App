@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 
 import { GithubUser } from '@/src/types/github';
 import { getGithubUser } from '@/src/api/github';
@@ -10,16 +11,16 @@ export default function HomeScreen() {
   const [username, setUsername] = useState('');
   const [user, setUser] = useState<GithubUser | null>(null);
 
-  const searchUser = async () => {
-    try {
-      const data = await getGithubUser(username);
-      setUsername('');
-      setUser(data);
-    } catch (error) {
-      setUser(null);
-      console.error(error);
-      alert('유저를 찾을 수 없습니다.');
-    }
+  const searchUser = () => {
+    if (!username.trim()) return;
+
+    router.push({
+      pathname: '/profile/[username]',
+      params: {
+        username,
+      },
+    });
+    setUsername('');
   };
 
   return (
