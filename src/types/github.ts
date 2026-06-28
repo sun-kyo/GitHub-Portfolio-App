@@ -7,3 +7,11 @@ export interface GithubUser {
   following: number;
   public_repos: number;
 }
+
+export interface GithubRepo {
+  id: number;
+  name: string;
+  description: string;
+  stargazers_count: number;
+  html_url: string;
+}
